@@ -12,6 +12,7 @@ function diff_minutes(dt1) {
 	diff /= 60;
 	let min = Math.abs(Math.floor(diff));
 	let sec = Math.round((diff - min) * 60);
+	sec = sec < 10 ? '0' + sec : sec;
 	return `${min}:${sec}`;
 }
 let run = async () => {
@@ -27,12 +28,11 @@ let run = async () => {
         side: 'buy',
          */
 		let { price, quantity, side, timestamp } = d;
-		if (s != side) {
-			let ts = new Date(timestamp);
-			output.push({ price, quantity, side, time: diff_minutes(ts) });
-			s = side;
-		}
+
+		let ts = new Date(timestamp);
+		output.push({ price, quantity, side, time: diff_minutes(ts) });
+		s = side;
 	});
 	return output;
 };
-run().then(o => console.log(o.reverse()));
+module.exports = run;
